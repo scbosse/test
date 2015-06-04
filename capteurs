@@ -1,0 +1,487 @@
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.graphics.*;
+import android.hardware.*;
+
+class Capteur {
+	private String nom;
+	private String stype;
+	public Capteur(Sensor sensor) {
+		setSensor(sensor);
+		val=new float[nbval+3];
+	}
+	public void setNom(String nom) {
+		this.nom=nom;
+	}
+	private Sensor sensor;
+	public String getStype() { return stype; }
+	public Sensor getSensor() { return sensor; }
+	private void setSensor(Sensor sensor) {
+		this.sensor=sensor;
+		this.nom="inconnu";
+		this.type=sensor.getType();
+		this.nbval=100;
+     	if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
+     		nom="Orientation";
+         }
+         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        	 nom="AccelÃ©romÃ¨tre";
+         }
+         if (sensor.getType() == Sensor.TYPE_LIGHT) {
+        	 nom="LumiÃ¨re";
+        	 nbval=1;
+         }
+         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+        	 nom="Champ MagnÃ©tique";
+         }
+         if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
+        	 nom="ProximitÃ©";
+        	 nbval=1;
+         }
+         if (sensor.getType() == Sensor.TYPE_TEMPERATURE) {
+        	 nom="TempÃ©rature";
+        	 nbval=1;
+         }
+         if (sensor.getType() == Sensor.TYPE_PRESSURE) {
+        	 nom="Pression";
+         }
+         if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+        	 nom="Gyroscope";
+         }
+	}
+	private final float nbc=100f;
+	public void setEvent(SensorEvent se) {
+		for (int j=0;j<se.values.length;j++) {
+			val[j]=  ( (int)((se.values[j]+0.5)*nbc))/nbc;
+		}
+	}
+	public int type;
+	public int nbval;
+    public float []val;
+	public String getNom() {return nom;	}
+	public int getType() {return sensor.getType();	}
+	
+}
+
+class Touche {
+	public int code;
+	public KeyEvent ke;
+	public String getString() {
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SOFT_LEFT ) {
+			return "SOFT_LEFT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SOFT_RIGHT ) {
+			return "SOFT_RIGHT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_HOME ) {
+			return "HOME";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_BACK ) {
+			return "BACK";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_CALL ) {
+			return "CALL";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_ENDCALL ) {
+			return "ENDCALL";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_0 ) {
+			return "0";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_1 ) {
+			return "1";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_2 ) {
+			return "2";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_3 ) {
+			return "3";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_4 ) {
+			return "4";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_5 ) {
+			return "5";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_6 ) {
+			return "6";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_7 ) {
+			return "7";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_8 ) {
+			return "8";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_9 ) {
+			return "9";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_STAR ) {
+			return "STAR";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_POUND ) {
+			return "POUND";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DPAD_UP ) {
+			return "DPAD_UP";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DPAD_DOWN ) {
+			return "DPAD_DOWN";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DPAD_LEFT ) {
+			return "DPAD_LEFT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DPAD_RIGHT ) {
+			return "DPAD_RIGHT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DPAD_CENTER ) {
+			return "DPAD_CENTER";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_VOLUME_UP ) {
+			return "VOLUME_UP";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_VOLUME_DOWN ) {
+			return "VOLUME_DOWN";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_POWER ) {
+			return "POWER";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_CAMERA ) {
+			return "CAMERA";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_CLEAR ) {
+			return "CLEAR";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_A ) {
+			return "A";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_B ) {
+			return "B";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_C ) {
+			return "C";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_D ) {
+			return "D";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_E ) {
+			return "E";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_F ) {
+			return "F";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_G ) {
+			return "G";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_H ) {
+			return "H";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_I ) {
+			return "I";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_J ) {
+			return "J";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_K ) {
+			return "K";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_L ) {
+			return "L";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_M ) {
+			return "M";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_N ) {
+			return "N";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_O ) {
+			return "O";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_P ) {
+			return "P";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_Q ) {
+			return "Q";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_R ) {
+			return "R";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_S ) {
+			return "S";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_T ) {
+			return "T";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_U ) {
+			return "U";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_V ) {
+			return "V";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_W ) {
+			return "W";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_X ) {
+			return "X";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_Y ) {
+			return "Y";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_Z ) {
+			return "Z";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_COMMA ) {
+			return "COMMA";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_PERIOD ) {
+			return "PERIOD";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_ALT_LEFT ) {
+			return "ALT_LEFT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_ALT_RIGHT ) {
+			return "ALT_RIGHT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SHIFT_LEFT ) {
+			return "SHIFT_LEFT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SHIFT_RIGHT ) {
+			return "SHIFT_RIGHT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_TAB ) {
+			return "TAB";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SPACE ) {
+			return "SPACE";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SYM ) {
+			return "SYM";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_EXPLORER ) {
+			return "EXPLORER";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_ENVELOPE ) {
+			return "ENVELOPE";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_ENTER ) {
+			return "ENTER";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_DEL ) {
+			return "DEL";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_GRAVE ) {
+			return "GRAVE";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MINUS ) {
+			return "MINUS";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_EQUALS ) {
+			return "EQUALS";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_LEFT_BRACKET ) {
+			return "LEFT_BRACKET";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_RIGHT_BRACKET ) {
+			return "RIGHT_BRACKET";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_BACKSLASH ) {
+			return "BACKSLASH";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SEMICOLON ) {
+			return "SEMICOLON";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_APOSTROPHE ) {
+			return "APOSTROPHE";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SLASH ) {
+			return "SLASH";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_AT ) {
+			return "AT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_NUM ) {
+			return "NUM";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_HEADSETHOOK ) {
+			return "HEADSETHOOK";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_FOCUS ) {
+			return "FOCUS";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_PLUS ) {
+			return "PLUS";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MENU ) {
+			return "MENU";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_NOTIFICATION ) {
+			return "NOTIFICATION";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_SEARCH ) {
+			return "SEARCH";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE ) {
+			return "MEDIA_PLAY_PAUSE";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_STOP ) {
+			return "MEDIA_STOP";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_NEXT ) {
+			return "MEDIA_NEXT";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_PREVIOUS ) {
+			return "MEDIA_PREVIOUS";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_REWIND ) {
+			return "MEDIA_REWIND";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ) {
+			return "MEDIA_FAST_FORWARD";
+		}
+		if (ke.getKeyCode()== KeyEvent.KEYCODE_MUTE ) {
+			return "MUTE";
+		}
+
+		return "UNKNOWN";
+	}
+}
+
+
+public class MaterielCapteurs extends Activity implements SensorEventListener {
+    SensorManager sm = null;
+
+    Hashtable<String,Capteur>  lc;
+    String texteA;
+    Ecran ecran;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        ecran=new Ecran(this);
+        setContentView( ecran );
+        
+        sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+        
+        List<Sensor>   ll=sm.getSensorList(Sensor.TYPE_ALL);
+        lc=new Hashtable<String, Capteur>();
+        
+        Iterator<Sensor> iSens = ll.iterator();
+        while ( iSens.hasNext() ){
+        	Sensor sens=iSens.next() ;
+        	Capteur capteur=new Capteur(sens);
+        	lc.put(""+sens.getType(),capteur);
+        	System.err.println("Enregistrement de type:"+sens.getType()+","+sens.getName());
+        }            
+    }
+    
+	private Touche t=new Touche();
+    @Override
+  	public boolean onKeyDown(int code_touche, KeyEvent event) {
+		/*
+		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+		 
+				return true;
+		}
+		*/
+    	if ((code_touche==KeyEvent.KEYCODE_BACK)&&(t.code==KeyEvent.KEYCODE_BACK) ) {
+    		System.exit(0);
+    	}
+    	t.code=code_touche;
+    	t.ke=event;
+		return true;
+	}
+
+    public void onSensorChanged(SensorEvent se) {
+         synchronized (this) {
+        	 Capteur capteur=lc.get(""+se.sensor.getType() );
+        	 if (capteur==null) {
+    			Log.d("Accelerometre", "capteur=null,setCapteur("+se.sensor.getType() );
+    			return;
+        	 }
+        	 capteur.setEvent(se);
+        }
+    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    	//Log.d("Accelerometre","onAccuracyChanged("+accel+"," + prec+")");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        Enumeration<String> iCapteur= lc.keys();
+        while ( iCapteur.hasMoreElements() ){
+        	String id=	iCapteur.nextElement();
+
+        	Capteur capteur=lc.get(id);
+        	Sensor sens=capteur.getSensor();
+        	sm.registerListener(this, sens,SensorManager.SENSOR_DELAY_NORMAL);
+    	}
+    }
+    @Override
+    protected void onStop() {
+        sm.unregisterListener(this);
+        super.onStop();
+    }   
+    private class Ecran extends View implements KeyEvent.Callback {
+    	private Paint pinceau=null;
+
+
+    	public Ecran(Context context) {
+             super(context);
+             pinceau=new Paint();
+             pinceau.setARGB(255, 120, 180, 0);
+             pinceau.setTextSize((float)16);
+    	}
+
+    	@Override protected void onDraw(Canvas canvas) {
+        	 canvas.drawColor(Color.BLACK);
+        	 pinceau.setColor(Color.WHITE);
+             
+             Enumeration<String> iCapteur= lc.keys();
+             String s="";
+             int i=20;
+             if (t.ke!=null) {
+                 canvas.drawText("touche:"+t.ke.getDisplayLabel()+"/"+t.ke.getUnicodeChar()+" ["+t.getString()+"],"+t.ke.getRepeatCount() +","+  t.ke.getKeyCode(),1,i,pinceau);
+                 i+=5;
+                 canvas.drawLine(1,i,300,i,pinceau);
+                 i+=20;
+             }
+             
+             while ( iCapteur.hasMoreElements() ){
+              	String id=	iCapteur.nextElement();
+
+            	Capteur capteur=lc.get(id);
+             	s=capteur.getNom()+" "+capteur.getSensor().getMaximumRange();
+             	pinceau.setTextSize((float)22);
+            	canvas.drawText(s,1,i,pinceau);
+
+            	i+=24;
+            	
+        		pinceau.setTextSize((float)18);
+            	for (int j=0;j<capteur.nbval;j++) {
+            		s=""+capteur.val[j];
+            		canvas.drawText(s,20+100*j,i,pinceau);
+            	}
+            	i+=8;
+               	canvas.drawLine(1,i,300,i,pinceau);
+                
+            	i+=18;
+            	i+=5;  // interlignes
+             	
+             }
+             invalidate();
+    	}
+	}
+    
+}
